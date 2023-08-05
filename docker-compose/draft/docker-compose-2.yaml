@@ -1,0 +1,108 @@
+version: '3.9'
+
+services:
+  cassandra_db_node_1_seed:
+    container_name: cassandra_db_node_1_seed
+    image: cassandra:4.1.3
+    ports:
+      - "9041:9042"
+    #    expose:
+    #      - 7000
+    #      - 7001
+    #      - 7199
+    #      - 9042
+    #      - 9142
+    environment:
+      - CASSANDRA_SEEDS=172.16.238.11
+      - CASSANDRA_CLUSTER_NAME=TutorialCluster
+      - CASSANDRA_DC=dc
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - HEAP_NEWSIZE=128M
+      #      - CASSANDRA_NUM_TOKENS=5
+      #      - MAX_HEAP_SIZE=2048M
+      #      - NUM_TOKENS=256
+      - MAX_HEAP_SIZE=1000000000
+    networks:
+      cassandra_network:
+        ipv4_address: 172.16.238.11
+
+  cassandra_db_node_2:
+    container_name: cassandra_db_node_2
+    image: cassandra:4.1.0
+    ports:
+      - "9042:9042"
+    #    expose:
+    #      - 7000
+    #      - 7001
+    #      - 7199
+    #      - 9042
+    #      - 9142
+    environment:
+      - CASSANDRA_SEEDS=172.16.238.11
+      - CASSANDRA_CLUSTER_NAME=TutorialCluster
+      - CASSANDRA_DC=dc
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - HEAP_NEWSIZE=128M
+      #      - CASSANDRA_NUM_TOKENS=10
+      #      - MAX_HEAP_SIZE=2048M
+      #      - NUM_TOKENS=256
+      - MAX_HEAP_SIZE=1000000000
+    networks:
+      cassandra_network:
+        ipv4_address: 172.16.238.12
+
+  cassandra_db_node_3:
+    container_name: cassandra_db_node_3
+    image: cassandra:4.1.0
+    ports:
+      - "9043:9042"
+    #    expose:
+    #      - 7000
+    #      - 7001
+    #      - 7199
+    #      - 9042
+    #      - 9142
+    environment:
+      - CASSANDRA_SEEDS=172.16.238.11
+      - CASSANDRA_CLUSTER_NAME=TutorialCluster
+      - CASSANDRA_DC=dc
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - HEAP_NEWSIZE=128M
+      #      - CASSANDRA_NUM_TOKENS=15
+      #      - MAX_HEAP_SIZE=2048M
+      #      - NUM_TOKENS=256
+      - MAX_HEAP_SIZE=1000000000
+    networks:
+      cassandra_network:
+        ipv4_address: 172.16.238.13
+
+
+#  cassandra_db_node_3:
+#    container_name: cassandra_db_node_3
+#    image: cassandra:4.1.0
+#    ports:
+#      - "9044:9042"
+#    environment:
+#      - HEAP_NEWSIZE=128M
+#      - MAX_HEAP_SIZE=2048M
+#    volumes:
+#      - ./config/node_3/cassandra_node_3.yaml:/etc/cassandra/cassandra.yaml
+##    deploy:
+##      resources:
+##        limits:
+##          cpus: '1'
+##          memory: 3G
+##        reservations:
+##          cpus: '1'
+##          memory: 3G
+#    networks:
+#      cassandra_network:
+#        ipv4_address: 172.16.238.12
+
+
+networks:
+  cassandra_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
